@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  gateway:
+    build: ./nest-api-gateway
+    container_name: gateway
+    volumes:
+      - ./nest-api-gateway/src:/usr/src/app/nest-api-gateway/src
+    ports:
+     - ${GATEWAY_PORT}:${GATEWAY_PORT}
+    env_file:
+     - ./.env
+    networks:
+      - movie_app_backend
+
+  movie:
+    build: ./nest-microservice-movie
+    container_name: movie
+    volumes:
+      - ./nest-microservice-movie/src:/usr/src/app/nest-microservice-movie/src
+    ports:
+     - ${MOVIE_PORT}:${MOVIE_PORT}
+    env_file:
+     - ./.env
+    networks:
+     - movie_app_backend
+
+  author:
+    build: ./nest-microservice-author
+    container_name: author
+    volumes:
+      - ./nest-microservice-author/src:/usr/src/app/nest-microservice-author/src
+    ports:
+     - ${AUTHOR_PORT}:${AUTHOR_PORT}
+    env_file:
+     - ./.env
+    networks:
+     - movie_app_backend
+
+  mysql:
+    container_name: ${MYSQL_HOST}
+    restart: always
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    networks:
+      - movie_app_backend
+
+networks:
+  movie_app_backend:
+    name: movie_app_backend
+    driver: bridge
