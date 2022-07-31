@@ -1,7 +1,18 @@
 import { Country } from '../../types';
-import { Min, Max, IsEnum, IsString, IsOptional } from 'class-validator';
+import {
+  Min,
+  Max,
+  IsEnum,
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class UpdateMovieDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
   @IsString()
   @IsOptional()
   director: string;

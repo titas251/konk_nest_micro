@@ -24,8 +24,8 @@ export class MoviesService {
     return this.moviesRepository.save(newMovie);
   }
 
-  update(id: string, movie: UpdateMovieDto) {
-    return this.moviesRepository.save({ id, ...movie });
+  update(movie: UpdateMovieDto) {
+    return this.moviesRepository.save(movie);
   }
 
   async remove(id: string) {

@@ -1,6 +1,10 @@
-import { IsString, IsOptional, IsInt } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsNotEmpty } from 'class-validator';
 
 export class UpdateAuthorDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
   @IsString()
   @IsOptional()
   name: string;

@@ -20,8 +20,8 @@ export class AuthorService {
     return this.authorRepository.findOneBy({ id });
   }
 
-  update(id: string, author: UpdateAuthorDto) {
-    return this.authorRepository.save({ id, ...author });
+  update(author: UpdateAuthorDto) {
+    return this.authorRepository.save(author);
   }
 
   async create(author: CreateAuthorDto) {

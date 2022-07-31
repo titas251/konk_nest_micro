@@ -1,5 +1,5 @@
-import { Controller, Body, Param } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthorService } from './Author.service';
 import { CreateAuthorDto } from './dto/CreateAuthor.dto';
 import { UpdateAuthorDto } from './dto/UpdateAuthor.dto';
@@ -9,8 +9,8 @@ export class AuthorsController {
   constructor(private authorService: AuthorService) {}
 
   @MessagePattern({ cmd: 'create' })
-  create(@Body() createAuthorDto: CreateAuthorDto) {
-    return this.authorService.create(createAuthorDto);
+  create(@Payload() payload: CreateAuthorDto) {
+    return this.authorService.create(payload);
   }
 
   @MessagePattern({ cmd: 'findAll' })
@@ -19,17 +19,17 @@ export class AuthorsController {
   }
 
   @MessagePattern({ cmd: 'findOne' })
-  findOne(@Param() params) {
-    return this.authorService.findOne(params.id);
+  findOne(@Payload() id) {
+    return this.authorService.findOne(id);
   }
 
-  @MessagePattern({ cmd: 'delete' })
-  delete(@Param() params) {
-    return this.authorService.remove(params.id);
+  @MessagePattern({ cmd: 'remove' })
+  delete(@Payload() id) {
+    return this.authorService.remove(id);
   }
 
   @MessagePattern({ cmd: 'update' })
-  update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
-    return this.authorService.update(id, updateAuthorDto);
+  update(@Payload() payload: UpdateAuthorDto) {
+    return this.authorService.update(payload);
   }
 }

@@ -9,8 +9,7 @@ export class AuthorService {
 
   findAll() {
     const pattern = { cmd: 'findAll' };
-    const payload = {};
-    return this.authorServiceClient.send(pattern, payload);
+    return this.authorServiceClient.send(pattern, {});
   }
 
   findOne(id: string) {
@@ -27,7 +26,7 @@ export class AuthorService {
 
   update(id: string, movie: any) {
     const pattern = { cmd: 'update' };
-    const payload = { id, movie };
+    const payload = { id, ...movie };
     return this.authorServiceClient.send(pattern, payload);
   }
 

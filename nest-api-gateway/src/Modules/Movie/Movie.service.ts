@@ -9,8 +9,7 @@ export class MoviesService {
 
   findAll() {
     const pattern = { cmd: 'findAll' };
-    const payload = {};
-    return this.movieServiceClient.send(pattern, payload);
+    return this.movieServiceClient.send(pattern, {});
   }
 
   findOne(id: string) {
@@ -27,7 +26,7 @@ export class MoviesService {
 
   update(id: string, movie: any) {
     const pattern = { cmd: 'update' };
-    const payload = { id, movie };
+    const payload = { id, ...movie };
     return this.movieServiceClient.send(pattern, payload);
   }
 
