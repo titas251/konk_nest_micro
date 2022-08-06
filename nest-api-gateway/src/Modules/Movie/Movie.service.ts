@@ -35,4 +35,11 @@ export class MoviesService {
     const payload = id;
     return this.movieServiceClient.send(pattern, payload);
   }
+
+  removeAuthorFromMovie(authorId: string) {
+    const pattern = { cmd: 'removeAuthorFromMovie' };
+    const payload = authorId;
+
+    return this.movieServiceClient.send(pattern, payload);
+  }
 }

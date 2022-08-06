@@ -19,5 +19,5 @@ export const ConnectionOptions: DataSourceOptions = {
   database: MYSQL_DATABASE,
   synchronize: true,
   bigNumberStrings: false,
-  logging: false,
+  logging: true,
 };

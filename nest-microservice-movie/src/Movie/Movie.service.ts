@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, getConnection, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Movie } from './Movie.entity';
 import { CreateMovieDto } from './dto/CreateMovie.dto';
 import { UpdateMovieDto } from './dto/UpdateMovie.dto';
 import { AuthorIds } from './AuthorIds.entity';
-import { Connection } from 'mysql2';
 
 @Injectable()
 export class MoviesService {
   constructor(
     private dataSource: DataSource,
     @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
+    @InjectRepository(AuthorIds)
+    private authorIdsRepository: Repository<AuthorIds>,
   ) {}
 
   findAll() {
@@ -51,5 +52,13 @@ export class MoviesService {
 
   async remove(id: string) {
     return this.moviesRepository.delete(id);
+  }
+
+  async removeAuthorFromMovie(authorId: string) {
+    return await this.authorIdsRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where('author_id = :id', { id: authorId })
+      .execute();
   }
 }

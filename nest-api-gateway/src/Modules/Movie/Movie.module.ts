@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthorModule } from '../Author/Author.module';
 import { MoviesController } from './Movie.controller';
@@ -18,9 +18,10 @@ const { MOVIE_HOST, MOVIE_PORT } = process.env;
         },
       },
     ]),
-    AuthorModule,
+    forwardRef(() => AuthorModule),
   ],
   controllers: [MoviesController],
   providers: [MoviesService],
+  exports: [MoviesService],
 })
 export class MovieModule {}

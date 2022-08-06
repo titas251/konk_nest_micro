@@ -39,4 +39,9 @@ export class MoviesController {
   delete(@Payload() id) {
     return this.moviesService.remove(id);
   }
+
+  @MessagePattern({ cmd: 'removeAuthorFromMovie' })
+  removeAuthorFromMovie(@Payload() authorId) {
+    return this.moviesService.removeAuthorFromMovie(authorId);
+  }
 }
