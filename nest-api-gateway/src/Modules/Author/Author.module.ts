@@ -20,5 +20,6 @@ const { AUTHOR_HOST, AUTHOR_PORT } = process.env;
   ],
   controllers: [AuthorController],
   providers: [AuthorService],
+  exports: [AuthorService],
 })
 export class AuthorModule {}

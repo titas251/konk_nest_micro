@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Country } from '../types';
+import { AuthorIds } from './AuthorIds.entity';
 
 @Entity('movie')
 export class Movie extends BaseEntity {
@@ -45,6 +47,6 @@ export class Movie extends BaseEntity {
   })
   deletedAt?: Date;
 
-  /*@OneToMany(() => Author, (author) => author.movie)
-  authors: Author[];*/
+  @OneToMany(() => AuthorIds, (author) => author.movie)
+  authorIds: AuthorIds[];
 }

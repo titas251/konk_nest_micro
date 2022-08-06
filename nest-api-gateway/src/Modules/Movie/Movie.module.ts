@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthorModule } from '../Author/Author.module';
 import { MoviesController } from './Movie.controller';
 import { MoviesService } from './Movie.service';
 
@@ -17,6 +18,7 @@ const { MOVIE_HOST, MOVIE_PORT } = process.env;
         },
       },
     ]),
+    AuthorModule,
   ],
   controllers: [MoviesController],
   providers: [MoviesService],

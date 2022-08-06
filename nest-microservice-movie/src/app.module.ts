@@ -4,6 +4,7 @@ import { ConnectionOptions } from './TypeORM/ConnectionOptions';
 import { MovieModule } from './Movie/Movie.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { redisOptions } from './Redis/RedisConnectionOpt';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -16,4 +17,6 @@ import { redisOptions } from './Redis/RedisConnectionOpt';
     MovieModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) {}
+}

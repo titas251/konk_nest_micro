@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource, getConnection, Repository } from 'typeorm';
 import { Movie } from './Movie.entity';
 import { CreateMovieDto } from './dto/CreateMovie.dto';
 import { UpdateMovieDto } from './dto/UpdateMovie.dto';
+import { AuthorIds } from './AuthorIds.entity';
+import { Connection } from 'mysql2';
 
 @Injectable()
 export class MoviesService {
   constructor(
+    private dataSource: DataSource,
     @InjectRepository(Movie) private moviesRepository: Repository<Movie>,
   ) {}
 
@@ -19,9 +22,27 @@ export class MoviesService {
     return this.moviesRepository.findOneBy({ id });
   }
 
-  create(movie: CreateMovieDto) {
-    const newMovie = this.moviesRepository.create(movie);
-    return this.moviesRepository.save(newMovie);
+  async create(movie: CreateMovieDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const newMovie = await queryRunner.manager.save(Movie, movie);
+
+      const relatedAuthor = new AuthorIds();
+      relatedAuthor.authorId = movie.authorId;
+      relatedAuthor.movie = newMovie;
+      await queryRunner.manager.save(AuthorIds, relatedAuthor);
+      await queryRunner.commitTransaction();
+
+      return newMovie;
+    } catch {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   update(movie: UpdateMovieDto) {

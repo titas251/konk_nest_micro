@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { CreateMovieGuard } from './guards/CreateMovie.guard';
 import { MoviesService } from './Movie.service';
 
 @Controller('movies')
@@ -14,6 +16,7 @@ export class MoviesController {
   constructor(private moviesService: MoviesService) {}
 
   @Post()
+  @UseGuards(CreateMovieGuard)
   create(@Body() body: any) {
     return this.moviesService.create(body);
   }
